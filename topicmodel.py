@@ -33,6 +33,7 @@ logging.basicConfig(format='%(asctime)s : %(levelname)s : %(message)s', level=lo
 import warnings
 
 warnings.filterwarnings("ignore", category=DeprecationWarning)
+warnings.filterwarnings("ignore", category=FutureWarning)
 
 """
 The columns included in this dataset are:
@@ -160,7 +161,9 @@ import pandas as pd
 from bokeh.io import push_notebook, show, output_notebook
 from bokeh.plotting import figure
 from bokeh.models import ColumnDataSource, LabelSet
-output_notebook()
+from bokeh.resources import CDN
+from bokeh.embed import file_html
+from bokeh.plotting import output_file
 
 svd = TruncatedSVD(n_components=100)
 documents_2d = svd.fit_transform(data_vectorized)
@@ -176,7 +179,8 @@ labels = LabelSet(x="x", y="y", text="document", y_offset=8,
 plot = figure(plot_width=600, plot_height=600)
 plot.circle("x", "y", size=12, source=source, line_color="black", fill_alpha=0.8)
 plot.add_layout(labels)
-show(plot)
+html = file_html(plot, CDN, "my plot")
+output_file("bokeh.html")
 
 
 
@@ -194,7 +198,8 @@ labels = LabelSet(x="x", y="y", text="word", y_offset=8,
 plot = figure(plot_width=600, plot_height=600)
 plot.circle("x", "y", size=12, source=source, line_color="black", fill_alpha=0.8)
 plot.add_layout(labels)
-show(plot)
+html = file_html(plot, CDN, "another plot")
+output_file("bokeh2.html")
 
 
 
